@@ -1,0 +1,7 @@
+<xml version="1.0" encoding="UTF-8" />
+<config>
+  <entry key="title">Publish Component Dependencies</entry>
+  <entry key="description">Publish all pages dependent on a specific component.</entry>
+  <entry key="types" private="true">sidebar</entry>
+  <entry key="initial_height" private="true">300</entry>
+</config>
