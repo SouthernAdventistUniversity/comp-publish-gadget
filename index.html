@@ -3,18 +3,35 @@
 
 <head>
   <script type="text/javascript" src="https://www.southern.edu/_resources-prod/gadgets/lib/gadgetlib.min.js"></script>
-  <style></style>
+  <style>
+    form {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 1rem;
+      font-size: 1.2rem;
+    }
+
+    input {
+      height: 2rem;
+    }
+  </style>
 </head>
 
 <body>
   <main>
-      <form>
-      </form>
+    <form method="get">
+      <label for="component-input">Select a component</label>
+      <input type="text" id="component-input" list="component-list" />
+
+      <input type="submit" value="Publish Pages" />
+
+      <datalist id="component-list"> </datalist>
+    </form>
   </main>
 
-  <script type="text/javascript" defer>
-
-  </script>
+  <script type="text/javascript" defer></script>
 </body>
+
+<!-- PETITE VUE??? -->
 
 </html>
