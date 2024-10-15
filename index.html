@@ -80,7 +80,7 @@
        * @param {event} event - Form submission event
        * @return {array} dependencies
        */
-      async function getDependencies(event) {
+      function getDependencies(event) {
         // Stop default action
         event.preventDefault();
         // Get title of component
@@ -100,7 +100,8 @@
               `<p>Publishing: <a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a></p>`,
             );
 
-            await publishPage(site, path, comp).then((key) => console.log(key));
+            const key = publishPage(site, path, comp);
+            console.log(key);
           });
         });
       }
@@ -121,16 +122,16 @@
           include_pending_approval: false,
           include_checked_out: false,
         };
+        let key = null;
 
-        return $.ajax({
+        $.ajax({
           url: HOST + "/files/publish",
           method: "POST",
           headers: {"X-Auth-Token": TOKEN},
           data: data,
         })
           .then((data) => {
-            console.log(data.key);
-            return data.key;
+            key = data.key;
           })
           .catch((xhr, status, error) => {
             if (!xhr.responseJSON) {
@@ -138,6 +139,8 @@
             }
             throw error;
           });
+
+        return key;
       }
 
       /**
