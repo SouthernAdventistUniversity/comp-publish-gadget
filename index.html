@@ -44,7 +44,7 @@
       getComponentsList();
 
       // Handle Form submit
-      $("form").on("submit", getDependencies(event));
+      $("form").on("submit", (event) => getDependencies(event));
 
       /**
        * Fetch list of components and render as options in datalist
