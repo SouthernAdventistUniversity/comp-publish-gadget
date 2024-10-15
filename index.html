@@ -41,15 +41,8 @@
 
     function getComponentsList(token, host) {
       const endpoint = host + "/rs/components";
-      const requestData = {
-        authorization_token: token
-      };
 
-      $.ajax({
-        method: "GET",
-        url: endpoint,
-        data: requestData,
-      }).done(function (data) {
+      $.ajax(endpoint + "?authorization_token=" + token).done(function (data) {
         console.log(data);
       });
     }
