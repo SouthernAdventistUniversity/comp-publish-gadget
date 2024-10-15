@@ -44,7 +44,7 @@
       getComponentsList();
 
       // Handle Form submit
-      $("form").on("sumbit", getDependencies(event));
+      $("form").on("submit", getDependencies(event));
 
       /**
        * Fetch list of components and render as options in datalist
@@ -71,6 +71,7 @@
        * @return {array} dependencies
        */
       function getDependencies(event) {
+        console.log(event);
         // Stop default action
         event.preventDefault();
         // Get title of component
