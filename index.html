@@ -2,6 +2,8 @@
 <html>
 
 <head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://www.southern.edu/_resources-prod/gadgets/lib/gadgetlib.min.js"></script>
   <style>
     form {
@@ -25,13 +27,33 @@
 
       <input type="submit" value="Publish Pages" />
 
-      <datalist id="component-list"> </datalist>
+      <datalist id="component-list"></datalist>
     </form>
   </main>
 
-  <script type="text/javascript" defer></script>
-</body>
+  <script type="text/javascript">
+    gadget.ready().then(function () {
+      var APITOKEN = gadget.get("token");
+      var API_HOST = gadget.get("apihost"); // the API server host
+      // Code that uses the token goes here
+      console.log(API_HOST, APITOKEN);
+    });
 
-<!-- PETITE VUE??? -->
+    function getComponentsList(token, host) {
+      const endpoint = host + "/rs/components";
+      const requestData = {
+        authorization_token: token
+      };
+
+      $.ajax({
+        method: "GET",
+        url: endpoint,
+        data: requestData,
+      }).done(function (data) {
+        console.log(data);
+      });
+    }
+  </script>
+</body>
 
 </html>
