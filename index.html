@@ -11,6 +11,7 @@
       background: none;
       padding: 2rem;
     }
+
     form {
       display: flex;
       flex-flow: column nowrap;
@@ -25,9 +26,9 @@
 
 <body>
   <main>
-    <form method="get">
+    <form onsubmit="getDependencies(event.target.component.value)">
       <label for="component-input">Select a component</label>
-      <input type="text" id="component-input" list="component-list" />
+      <input type="text" id="component-input" name="component" list="component-list" />
 
       <input type="submit" value="Publish Pages" />
 
@@ -37,24 +38,45 @@
 
   <script type="text/javascript">
     gadget.ready().then(function () {
-      const APITOKEN = gadget.get("token");
-      const API_HOST = gadget.get("apihost"); // the API server host
+      const TOKEN = gadget.get("token");
+      const HOST = gadget.get("apihost");
 
-      getComponentsList(APITOKEN, API_HOST);
-    });
+      getComponentsList();
 
-    function getComponentsList(token, host) {
-      const endpoint = host + "/rs/components?authorization_token=" + token;
+      /**
+       * Fetch list of components and render as options in datalist
+       * @returns null
+       */
+      function getComponentsList() {
+        $.ajax({
+          url: HOST + "/rs/components",
+          headers: {"X-Auth-Token": TOKEN},
+        }).done(function (data) {
+          const sorted = data.sort((a, b) => a.title - b.title);
 
-      $.ajax({
-        url: endpoint,
-        headers: {"X-Auth-Token": token},
-      }).done(function (data) {
-        $.each(data, function (index, component) {
-            $("#component-list").append(`<option value="${component.title}"></option>`);
+          $.each(sorted, function (index, component) {
+            $("#component-list").append(
+              `<option value="${component.title}"></option>`,
+            );
+          });
         });
-      });
-    }
+      }
+
+      /**
+       * Fetch component dependencies for submitted component 
+       * @param string comp
+       * @return array dependencies
+       */
+      function getDependencies(comp) {
+        console.log(comp);
+        $.ajax({
+          url: HOST + "/rs/components/dependents/generic/" + comp,
+          headers: {"X-Auth-Token": TOKEN},
+        }).done(function (data) {
+            console.log(data);
+        });
+      }
+    });
   </script>
 </body>
 
