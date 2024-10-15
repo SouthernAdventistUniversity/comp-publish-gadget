@@ -26,7 +26,7 @@
 
 <body>
   <main>
-    <form onsubmit="getDependencies(event.target.component.value)">
+    <form>
       <label for="component-input">Select a component</label>
       <input type="text" id="component-input" name="component" list="component-list" />
 
@@ -43,9 +43,12 @@
 
       getComponentsList();
 
+      // Handle Form submit
+      $("form").on("sumbit", getDependencies(event));
+
       /**
        * Fetch list of components and render as options in datalist
-       * @returns null
+       * @returns {null}
        */
       function getComponentsList() {
         $.ajax({
@@ -64,11 +67,15 @@
 
       /**
        * Fetch component dependencies for submitted component 
-       * @param string comp
-       * @return array dependencies
+       * @param {event} event - Form submission event 
+       * @return {array} dependencies
        */
-      function getDependencies(comp) {
-        console.log(comp);
+      function getDependencies(event) {
+        // Stop default action
+        event.preventDefault();
+        // Get title of component
+        const comp = event.target.component.value;
+
         $.ajax({
           url: HOST + "/rs/components/dependents/generic/" + comp,
           headers: {"X-Auth-Token": TOKEN},
