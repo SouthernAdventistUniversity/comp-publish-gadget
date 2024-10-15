@@ -33,10 +33,10 @@
 
   <script type="text/javascript">
     gadget.ready().then(function () {
-      var APITOKEN = gadget.get("token");
-      var API_HOST = gadget.get("apihost"); // the API server host
-      // Code that uses the token goes here
-      console.log(API_HOST, APITOKEN);
+      const APITOKEN = gadget.get("token");
+      const API_HOST = gadget.get("apihost"); // the API server host
+
+      getComponentsList(APITOKEN, API_HOST);
     });
 
     function getComponentsList(token, host) {
