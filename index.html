@@ -40,9 +40,12 @@
     });
 
     function getComponentsList(token, host) {
-      const endpoint = host + "/rs/components";
+      const endpoint = host + "/rs/components?authorization_token=" + token;
 
-      $.ajax(endpoint + "?authorization_token=" + token).done(function (data) {
+      $.ajax({
+        url: endpoint,
+        headers: {"X-Auth-Token": token}
+      }).done(function (data) {
         console.log(data);
       });
     }
