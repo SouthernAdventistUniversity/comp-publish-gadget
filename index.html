@@ -5,6 +5,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://www.southern.edu/_resources-prod/gadgets/lib/gadgetlib.min.js"></script>
+  <link rel="stylesheet" href="https://a.cms.omniupdate.com/11/style.css" />
   <style>
     form {
       display: flex;
@@ -44,9 +45,11 @@
 
       $.ajax({
         url: endpoint,
-        headers: {"X-Auth-Token": token}
+        headers: {"X-Auth-Token": token},
       }).done(function (data) {
-        console.log(data);
+        $.each(data, function (index, component) {
+            $("#component-list").append(`<option value="${component.title}"></option>`);
+        });
       });
     }
   </script>
