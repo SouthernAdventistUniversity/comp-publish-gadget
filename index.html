@@ -34,10 +34,12 @@
 
       <datalist id="component-list"></datalist>
     </form>
+
+    <section name="results"></section>
   </main>
 
   <script type="text/javascript">
-    gadget.ready().then(function () {
+    gadget.ready().then(() => {
       const TOKEN = gadget.get("token");
       const HOST = gadget.get("apihost");
 
@@ -54,7 +56,7 @@
         $.ajax({
           url: HOST + "/rs/components",
           headers: {"X-Auth-Token": TOKEN},
-        }).done(function (data) {
+        }).done((data) => {
           const sorted = data.toSorted((a, b) => {
             if (a.title < b.title) {
               return -1;
@@ -65,9 +67,9 @@
             return 0;
           });
 
-          $.each(sorted, function (index, component) {
+          $.each(sorted, (index, component) => {
             $("#component-list").append(
-              `<option value="${component.title}"></option>`,
+              `<option value="${component.title}"></option>`
             );
           });
         });
@@ -79,20 +81,61 @@
        * @return {array} dependencies
        */
       function getDependencies(event) {
-        console.log(event);
         // Stop default action
         event.preventDefault();
         // Get title of component
         const comp = event.target.component.value;
+        // Get Results elem
+        const resultElem = $("[name='results']");
 
         $.ajax({
           url: HOST + "/rs/components/dependents/generic/" + comp,
           headers: {"X-Auth-Token": TOKEN},
-        }).done(function (data) {
-          console.log(data);
+        }).done((data) => {
+          $.each(data, (index, page) => {
+            
+            const site = page.sitename;
+            const path = page.path;
+            
+            resultElem.append(`<p>Publishing: ${site} / ${path}</p>`);
+
+            const key = publishPage(site, path, comp);
+
+            resultElem.append(`<p>Key: ${key}</p>`);
+
+          })
         });
       }
-    });
+
+      /**
+       * Publish a page and return the worker key
+       * @param {string} site
+       * @param {string} path
+       * @param {string} comp - name to use in publish message
+       * @returns {string} key
+       */
+      function publishPage(site, path, comp) {
+        const body = new URLSearchParams();
+        body.append('site', site);
+        body.append('path', path);
+        body.append('log', '[Script] Dependency Publish: ' + comp);
+        body.append('include_scheduled_publish', false);
+        body.append('include_pending_approval', false);
+        body.append('include_checked_out', false);
+
+        $.ajax({
+          url: HOST + "/files/publish",
+          method: 'POST',
+          headers: {"X-Auth-Token": TOKEN},
+          data: body;
+        }).done((data) => {
+          return data.key;
+        }).fail((xhr, status, error) => {
+          if (!data) {
+            return `Invalid Publish request: ${site} - ${path}`;
+          }
+        });
+      }
   </script>
 </body>
 
