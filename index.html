@@ -96,7 +96,9 @@
             const site = page.sitename;
             const path = page.path;
 
-            resultElem.append(`<p>Publishing: ${site}${path}</p>`);
+            resultElem.append(
+              `<p>Publishing: <a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a></p>`,
+            );
 
             const key = publishPage(site, path, comp);
 
@@ -129,7 +131,8 @@
           data: data,
         })
           .then((data) => {
-            return data.key;
+            console.log(data);
+            return data[0].key;
           })
           .catch((xhr, status, error) => {
             if (!xhr.responseJSON) {
