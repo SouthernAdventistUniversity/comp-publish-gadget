@@ -100,8 +100,7 @@
               `<p>Publishing: <a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a></p>`,
             );
 
-            const key = publishPage(site, path, comp);
-            console.log(key);
+            publishPage(site, path, comp);
           });
         });
       }
@@ -151,12 +150,18 @@
       function watchWorker(key) {
         // Fetch worker for key
         const worker = null;
+        let modifiedKey = null;
 
         $.ajax({
           url: HOST + "/rs/workers",
           headers: {"X-Auth-Token": TOKEN},
         }).then((response) => {
-          console.log(key, response);
+          // Replace all instances of '/'  and '.' with '_'
+          modifiedKey = response.key.replaceAll(/\/|\./gi, "_");
+          // Replace ':' with '-'
+          modifiedKey = modifiedKey.replaceAll((":", "-");
+
+          console.log(key, modifiedKey);
         });
 
         // If worker in progress: wait 5s and check again
@@ -165,7 +170,6 @@
         // // If worker doesn't succeed: show error message
         // elseif(worker['detail']['failed'] == true) {
         // }
-
       }
     });
   </script>
