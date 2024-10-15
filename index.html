@@ -127,7 +127,7 @@
           url: HOST + "/files/publish",
           method: 'POST',
           headers: {"X-Auth-Token": TOKEN},
-          data: body;
+          data: body,
         }).done((data) => {
           return data.key;
         }).fail((xhr, status, error) => {
