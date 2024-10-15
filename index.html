@@ -69,7 +69,7 @@
 
           $.each(sorted, (index, component) => {
             $("#component-list").append(
-              `<option value="${component.title}"></option>`
+              `<option value="${component.title}"></option>`,
             );
           });
         });
@@ -93,17 +93,15 @@
           headers: {"X-Auth-Token": TOKEN},
         }).done((data) => {
           $.each(data, (index, page) => {
-            
             const site = page.sitename;
             const path = page.path;
-            
+
             resultElem.append(`<p>Publishing: ${site} / ${path}</p>`);
 
             const key = publishPage(site, path, comp);
 
             resultElem.append(`<p>Key: ${key}</p>`);
-
-          })
+          });
         });
       }
 
@@ -116,26 +114,29 @@
        */
       function publishPage(site, path, comp) {
         const body = new URLSearchParams();
-        body.append('site', site);
-        body.append('path', path);
-        body.append('log', '[Script] Dependency Publish: ' + comp);
-        body.append('include_scheduled_publish', false);
-        body.append('include_pending_approval', false);
-        body.append('include_checked_out', false);
+        body.append("site", site);
+        body.append("path", path);
+        body.append("log", "[Script] Dependency Publish: " + comp);
+        body.append("include_scheduled_publish", false);
+        body.append("include_pending_approval", false);
+        body.append("include_checked_out", false);
 
         $.ajax({
           url: HOST + "/files/publish",
-          method: 'POST',
+          method: "POST",
           headers: {"X-Auth-Token": TOKEN},
           data: body,
-        }).done((data) => {
-          return data.key;
-        }).fail((xhr, status, error) => {
-          if (!data) {
-            return `Invalid Publish request: ${site} - ${path}`;
-          }
-        });
+        })
+          .done((data) => {
+            return data.key;
+          })
+          .fail((xhr, status, error) => {
+            if (!data) {
+              return `Invalid Publish request: ${site} - ${path}`;
+            }
+          });
       }
+    });
   </script>
 </body>
 
