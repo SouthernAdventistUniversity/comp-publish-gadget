@@ -56,7 +56,7 @@
         $.ajax({
           url: HOST + "/rs/components",
           headers: {"X-Auth-Token": TOKEN},
-        }).done((data) => {
+        }).then((data) => {
           const sorted = data.toSorted((a, b) => {
             if (a.title < b.title) {
               return -1;
@@ -91,12 +91,12 @@
         $.ajax({
           url: HOST + "/rs/components/dependents/generic/" + comp,
           headers: {"X-Auth-Token": TOKEN},
-        }).done((data) => {
+        }).then((data) => {
           $.each(data, (index, page) => {
             const site = page.sitename;
             const path = page.path;
 
-            resultElem.append(`<p>Publishing: ${site} / ${path}</p>`);
+            resultElem.append(`<p>Publishing: ${site}${path}</p>`);
 
             const key = publishPage(site, path, comp);
 
@@ -113,27 +113,29 @@
        * @returns {string} key
        */
       function publishPage(site, path, comp) {
-        const body = new URLSearchParams();
-        body.append("site", site);
-        body.append("path", path);
-        body.append("log", "[Script] Dependency Publish: " + comp);
-        body.append("include_scheduled_publish", false);
-        body.append("include_pending_approval", false);
-        body.append("include_checked_out", false);
+        const data = {
+          site: site,
+          path: path,
+          log: "[Script] Dependency Publish: " + comp,
+          include_scheduled_publish: false,
+          include_pending_approval: false,
+          include_checked_out: false,
+        };
 
-        $.ajax({
+        return $.ajax({
           url: HOST + "/files/publish",
           method: "POST",
           headers: {"X-Auth-Token": TOKEN},
-          data: body,
+          data: data,
         })
-          .done((data) => {
+          .then((data) => {
             return data.key;
           })
-          .fail((xhr, status, error) => {
-            if (!data) {
-              return `Invalid Publish request: ${site} - ${path}`;
+          .catch((xhr, status, error) => {
+            if (!xhr.responseJSON) {
+              throw new Error(`Invalid Publish request: ${site}${path}`);
             }
+            throw error;
           });
       }
     });
