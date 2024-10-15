@@ -101,8 +101,8 @@
             );
 
             const key = publishPage(site, path, comp);
+              console.log(key)
 
-            resultElem.append(`<p>Key: ${key}</p>`);
           });
         });
       }
@@ -131,8 +131,8 @@
           data: data,
         })
           .then((data) => {
-            console.log(data);
-            return data[0].key;
+            console.log(data.key);
+            return data.key;
           })
           .catch((xhr, status, error) => {
             if (!xhr.responseJSON) {
