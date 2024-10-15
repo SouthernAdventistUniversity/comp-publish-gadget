@@ -148,19 +148,18 @@
       function watchWorker(key) {
         // Fetch worker for key
         const worker = null;
-        let modifiedKey = null;
+
+        // Replace all instances of '/'  and '.' with '_'
+        let modifiedKey = key.replaceAll(/\/|\./gi, "_");
+        // Replace ':' with '-'
+        modifiedKey = modifiedKey.replaceAll(":", "-");
 
         $.ajax({
           url: HOST + "/rs/workers",
           headers: {"X-Auth-Token": TOKEN},
         }).then((response) => {
           response.forEach((worker) => {
-            // Replace all instances of '/'  and '.' with '_'
-            modifiedKey = worker.key.replaceAll(/\/|\./gi, "_");
-            // Replace ':' with '-'
-            modifiedKey = modifiedKey.replaceAll(":", "-");
-
-            console.log(key, modifiedKey);
+            console.log(worker.key, modifiedKey);
           });
         });
 
