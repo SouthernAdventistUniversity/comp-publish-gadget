@@ -110,7 +110,7 @@
        * @param {string} site
        * @param {string} path
        * @param {string} comp - name to use in publish message
-       * @returns {string} key
+       * @returns {null}
        */
       function publishPage(site, path, comp) {
         const data = {
@@ -137,8 +137,6 @@
             }
             throw error;
           });
-
-        return key;
       }
 
       /**
@@ -156,12 +154,14 @@
           url: HOST + "/rs/workers",
           headers: {"X-Auth-Token": TOKEN},
         }).then((response) => {
-          // Replace all instances of '/'  and '.' with '_'
-          modifiedKey = response.key.replaceAll(/\/|\./gi, "_");
-          // Replace ':' with '-'
-          modifiedKey = modifiedKey.replaceAll(":", "-");
+          response.forEach((worker) => {
+            // Replace all instances of '/'  and '.' with '_'
+            modifiedKey = worker.key.replaceAll(/\/|\./gi, "_");
+            // Replace ':' with '-'
+            modifiedKey = modifiedKey.replaceAll(":", "-");
 
-          console.log(key, modifiedKey);
+            console.log(key, modifiedKey);
+          });
         });
 
         // If worker in progress: wait 5s and check again
