@@ -80,7 +80,7 @@
        * @param {event} event - Form submission event
        * @return {array} dependencies
        */
-      function getDependencies(event) {
+      async function getDependencies(event) {
         // Stop default action
         event.preventDefault();
         // Get title of component
@@ -100,9 +100,7 @@
               `<p>Publishing: <a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a></p>`,
             );
 
-            const key = publishPage(site, path, comp);
-              console.log(key)
-
+            await publishPage(site, path, comp).then((key) => console.log(key));
           });
         });
       }
@@ -141,6 +139,15 @@
             throw error;
           });
       }
+
+      /**
+       * Receives the publish ajax request and watches for the worker
+       * @param {jqXHR} request
+       * @returns {null}
+       */
+      // async function watchWorker(request) {
+      //
+      // }
     });
   </script>
 </body>
