@@ -122,7 +122,6 @@
           include_pending_approval: false,
           include_checked_out: false,
         };
-        let key = null;
 
         $.ajax({
           url: HOST + "/files/publish",
@@ -131,7 +130,7 @@
           data: data,
         })
           .then((data) => {
-            key = data.key;
+            watchWorker(data.key);
           })
           .catch((xhr, status, error) => {
             if (!xhr.responseJSON) {
@@ -144,13 +143,30 @@
       }
 
       /**
-       * Receives the publish ajax request and watches for the worker
-       * @param {jqXHR} request
+       * Finds a worker by given key and reports the state.
+       * Recursively calls itself if state is "in_progress"
+       * @param {string} key
        * @returns {null}
        */
-      // async function watchWorker(request) {
-      //
-      // }
+      function watchWorker(key) {
+        // Fetch worker for key
+        const worker = null;
+
+        $.ajax({
+          url: HOST + "/rs/workers",
+          headers: {"X-Auth-Token": TOKEN},
+        }).then((response) => {
+          console.log(key, response);
+        });
+
+        // If worker in progress: wait 5s and check again
+        // if (worker['status'] == 'IN_PROGRESS') {
+        // }
+        // // If worker doesn't succeed: show error message
+        // elseif(worker['detail']['failed'] == true) {
+        // }
+
+      }
     });
   </script>
 </body>
