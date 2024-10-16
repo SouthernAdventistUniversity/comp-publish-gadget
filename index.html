@@ -173,15 +173,16 @@
         }).then((worker) => {
           console.log(worker);
           // If worker in progress: wait 5s and check again
-          if (worker.status == 'IN_PROGRESS') {
-            console.log("progress")
+          if (worker.status == "IN_PROGRESS") {
+            console.log("progress");
           }
           // If worker doesn't succeed: show error message
           else if (worker.detail.failed == true) {
-            console.log("failed")
+            console.log("failed");
           }
-        }
-      });
+        });
+      }
+    });
   </script>
 </body>
 
