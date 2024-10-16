@@ -167,7 +167,6 @@
        * @returns {null}
        */
       function watchWorker(ID) {
-        console.log(ID)
         $.ajax({
           url: HOST + "/rs/workers/" + ID,
           headers: {"X-Auth-Token": TOKEN},
@@ -176,10 +175,18 @@
           // If worker in progress: wait 5s and check again
           if (worker.status == "IN_PROGRESS") {
             console.log("progress");
+            setTimeout(() => {
+              watchWorker(ID);
+            }, 2000);
           }
           // If worker doesn't succeed: show error message
           else if (worker.detail.failed == true) {
             console.log("failed");
+            $("[name='results']").append("<p style='color: red;'>Failed</p>");
+          } else {
+            $("[name='results']").append(
+              "<p style='color: red;'>Succeeded</p>",
+            );
           }
         });
       }
