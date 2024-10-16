@@ -67,7 +67,6 @@
             return 0;
           });
 
-            console.log(data)
           $.each(sorted, (index, component) => {
             $("#component-list").append(
               `<option value="${component.title}"></option>`,
@@ -157,7 +156,7 @@
         }).then((response) => {
           // Find matching worker and watch the status
           const worker = response.find((worker) => worker.key == modifiedKey);
-          console.log("get": worker)
+          console.log("get:" worker)
           watchWorker(worker.id);
         });
       }
