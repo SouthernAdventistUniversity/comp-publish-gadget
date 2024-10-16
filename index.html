@@ -156,6 +156,7 @@
         }).then((response) => {
           // Find matching worker and watch the status
           const worker = response.find((worker) => worker.key == modifiedKey);
+          console.log("get": worker)
           watchWorker(worker.id);
         });
       }
@@ -167,6 +168,7 @@
        * @returns {null}
        */
       function watchWorker(ID) {
+        console.log(id)
         $.ajax({
           url: HOST + "/rs/workers/" + ID,
           headers: {"X-Auth-Token": TOKEN},
