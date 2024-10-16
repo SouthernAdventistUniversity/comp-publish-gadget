@@ -129,7 +129,7 @@
           data: data,
         })
           .then((data) => {
-            watchWorker(data.key);
+            getWorker(data.key);
           })
           .catch((xhr, status, error) => {
             if (!xhr.responseJSON) {
@@ -140,15 +140,11 @@
       }
 
       /**
-       * Finds a worker by given key and reports the state.
-       * Recursively calls itself if state is "in_progress"
+       * Finds worker for publish requests from all workers
        * @param {string} key
-       * @returns {null}
+       * @returns {string} id
        */
-      function watchWorker(key) {
-        // Fetch worker for key
-        const worker = null;
-
+      function getWorker(key) {
         // Replace all instances of '/'  and '.' with '_'
         let modifiedKey = key.replaceAll(/\/|\./gi, "_");
         // Replace ':' with '-'
@@ -158,19 +154,34 @@
           url: HOST + "/rs/workers",
           headers: {"X-Auth-Token": TOKEN},
         }).then((response) => {
-          response.forEach((worker) => {
-            console.log(worker.key, modifiedKey);
-          });
+          // Find matching worker and watch the status
+          const worker = response.find((worker) => worker.key == modifiedKey);
+          watchWorker(worker.id);
         });
-
-        // If worker in progress: wait 5s and check again
-        // if (worker['status'] == 'IN_PROGRESS') {
-        // }
-        // // If worker doesn't succeed: show error message
-        // elseif(worker['detail']['failed'] == true) {
-        // }
       }
-    });
+
+      /**
+       * Reports the state of worker by given ID
+       * Recursively calls itself if state is "in_progress"
+       * @param {string} ID
+       * @returns {null}
+       */
+      function watchWorker(ID) {
+        $.ajax({
+          url: HOST + "/rs/workers/" + ID,
+          headers: {"X-Auth-Token": TOKEN},
+        }).then((worker) => {
+          console.log(worker);
+          // If worker in progress: wait 5s and check again
+          if (worker.status == 'IN_PROGRESS') {
+            console.log("progress")
+          }
+          // If worker doesn't succeed: show error message
+          else if (worker.detail.failed == true) {
+            console.log("failed")
+          }
+        }
+      });
   </script>
 </body>
 
