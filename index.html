@@ -48,12 +48,12 @@
       </p>
 
       <details>
-        <summary>Succeeded: <span>0</span></summary>
+        <summary>Succeeded: <span name="successCount">0</span></summary>
         <ul name="success"></ul>
       </details>
 
       <details open>
-        <summary>Failed: <span>0</span></summary>
+        <summary>Failed: <span name="failCount">0</span></summary>
         <ul name="fail"></ul>
       </details>
     </section>
@@ -66,6 +66,8 @@
       let pubCount = 0;
       // Get Count span
       const countSpan = $("[name='count']");
+      const failSpan = $("[name='failCount']");
+      const successSpan = $("[name='successCount']");
 
       getComponentsList();
 
@@ -109,9 +111,11 @@
         event.preventDefault();
         // Get title of component
         const comp = event.target.component.value;
-        // Reset pubCount
+        // Reset counts 
         pubCount = 0;
         countSpan.text(pubCount);
+        failSpan.text(0);
+        successSpan.text(0);
         // Reset results details
         $("[name='success']").html("");
         $("[name='fail']").html("");
@@ -216,7 +220,7 @@
             // Increase pub count
             pubCount++;
             // Update failed count
-            failList.parent().children("span").text(failList.length);
+            failSpan.text(failList.length);
           } else {
             const successList = $("[name='success']");
             const site = worker.detail.site;
@@ -227,8 +231,7 @@
             // Increase pub count
             pubCount++;
             // Update success count
-              console.log(successList.parent().children("span"), successList.length);
-            successList.parent().children("span").text(successList.length);
+            successSpan.text(successList.length);
           }
           // Update count for UI
           countSpan.text(pubCount);
