@@ -227,6 +227,7 @@
             // Increase pub count
             pubCount++;
             // Update success count
+              console.log(successList.parent().children("span"), successList.length);
             successList.parent().children("span").text(successList.length);
           }
           // Update count for UI
