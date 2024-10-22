@@ -216,7 +216,7 @@
             // Increase pub count
             pubCount++;
             // Update failed count
-            failList.parent().("span").text(failList.length);
+            failList.parent().children("span").text(failList.length);
           } else {
             const successList = $("[name='success']");
             const site = worker.detail.site;
@@ -227,7 +227,7 @@
             // Increase pub count
             pubCount++;
             // Update success count
-            successList.parent().("span").text(successList.length);
+            successList.parent().children("span").text(successList.length);
           }
           // Update count for UI
           countSpan.text(pubCount);
