@@ -43,8 +43,7 @@
 
     <section>
       <p>
-        Publishing: <span name="total">0</span> ///
-        <span name="count" hidden></span>
+        Publishing: <span name="count">0</span>/<span name="total">0</span>
       </p>
 
       <details name="success">
@@ -109,7 +108,7 @@
         const comp = event.target.component.value;
         // Reset pubCount
         pubCount = 0;
-        countSpan.attr("hidden", true);
+        countSpan.text(pubCount);
         // Reset results details
         $("[name='success']").html("<summary>Succeeded</summary>");
         $("[name='fail']").html("<summary>Failed</summary>");
