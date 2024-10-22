@@ -42,8 +42,9 @@
     </form>
 
     <section>
-      <p name="progress" hidden>
-        Publishing: <span name="total" /> /// <span name="count" />
+      <p>
+        Publishing: <span name="total">0</span> ///
+        <span name="count" hidden></span>
       </p>
 
       <details name="success">
@@ -61,6 +62,8 @@
       const TOKEN = gadget.get("token");
       const HOST = gadget.get("apihost");
       let pubCount = 0;
+      // Get Count span
+      const countSpan = $("[name='count']");
 
       getComponentsList();
 
@@ -102,22 +105,19 @@
       function getDependencies(event) {
         // Stop default action
         event.preventDefault();
-        // Reset pubCount and reset output
-        pubCount = 0;
-        $("[name='progress']").attr("hidden", true);
-        $("[name='success']").html("<summary>Succeeded</summary>");
-        $("[name='fail']").html("<summary>Failed</summary>");
-
-        // Get Count span
-        const countSpan = $("[name='count']");
         // Get title of component
         const comp = event.target.component.value;
+        // Reset pubCount
+        pubCount = 0;
+        countSpan.attr("hidden", true);
+        // Reset results details
+        $("[name='success']").html("<summary>Succeeded</summary>");
+        $("[name='fail']").html("<summary>Failed</summary>");
 
         $.ajax({
           url: HOST + "/rs/components/dependents/generic/" + comp,
           headers: {"X-Auth-Token": TOKEN},
         }).then((data) => {
-          countSpan.text(pubCount);
           $("[name='total']").text(data.length);
           $("[name='progress']").removeAttr("hidden");
 
@@ -126,9 +126,6 @@
             const path = page.path;
 
             publishPage(site, path, comp);
-            // Increase count for UI
-            pubCount++;
-            countSpan.text(pubCount);
           });
         });
       }
@@ -200,12 +197,16 @@
           headers: {"X-Auth-Token": TOKEN},
         }).then((worker) => {
           // If worker in progress: wait 5s and check again
+          console.log(worker);
           if (worker.status == "IN_PROGRESS") {
             setTimeout(() => {
               watchWorker(ID);
             }, 2000);
+          } else {
+            // Increase count for UI
+            pubCount++;
+            countSpan.text(pubCount);
           }
-          console.log(worker);
           // $("[name='results']").append(
           //   `<div name="target">Publishing:
           //     <a target="_blank" href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a>
