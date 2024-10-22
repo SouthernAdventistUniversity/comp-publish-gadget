@@ -179,10 +179,8 @@
           url: HOST + "/rs/workers/" + ID,
           headers: {"X-Auth-Token": TOKEN},
         }).then((worker) => {
-          console.log(worker);
           // If worker in progress: wait 5s and check again
           if (worker.status == "IN_PROGRESS") {
-            console.log("in progress");
             setTimeout(() => {
               watchWorker(ID);
             }, 2000);
