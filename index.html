@@ -206,14 +206,13 @@
           headers: {"X-Auth-Token": TOKEN},
         }).then((worker) => {
           // If worker in progress: wait 5s and check again
-          console.log(worker);
           if (worker.status == "IN_PROGRESS") {
             setTimeout(() => {
               watchWorker(ID);
             }, 2000);
           }
           // Add page to either failure or success lists
-          else if (worker.detail.failed == true) {
+          else if (worker.detail.failed.length > 0) {
             const failList = $("[name='failed']");
             const site = worker.detail.site;
             const path = worker.detail.failed[site][0].path;
