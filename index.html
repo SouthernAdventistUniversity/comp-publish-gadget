@@ -214,7 +214,7 @@
             }, 2000);
           }
           // Add page to either failure or success lists
-          else if (worker.detail.failed.length > 0) {
+          else if (Object.keys(worker.detail.failed).length != 0) {
             const failList = $("[name='failed']");
             const site = worker.detail.site;
             const path = worker.detail.failed[site][0].path;
