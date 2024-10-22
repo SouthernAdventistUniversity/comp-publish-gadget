@@ -205,8 +205,7 @@
           url: HOST + "/rs/workers/" + ID,
           headers: {"X-Auth-Token": TOKEN},
         }).then((worker) => {
-            console.warn(worker);
-            console.log(worker.detail.failed.length > 0);
+          console.warn(worker);
           // If worker in progress: wait 5s and check again
           if (worker.status == "IN_PROGRESS") {
             setTimeout(() => {
@@ -217,7 +216,8 @@
           else if (Object.keys(worker.detail.failed).length != 0) {
             const failList = $("[name='failed']");
             const site = worker.detail.site;
-            const path = worker.detail.failed[site][0].path;
+            const path = Object.keys(worker.detail.failed[site][0])[0];
+            const error = worker.detail.failed[site][0][0];
 
             failList.append(createListItem(site, path));
 
@@ -230,7 +230,7 @@
             const site = worker.detail.site;
             const path = worker.detail.success[site][0].path;
 
-            successList.append(createListItem(site, path));
+            successList.append(createListItem(site, path, error);
 
             // Increase pub count
             pubCount++;
@@ -245,10 +245,11 @@
          * Returns an HTML published status list item
          * @param {string} site
          * @param {string} path
+         * @param {string} error - optional message
          * @returns {string} html li item
          */
-        function createListItem(site, path) {
-          return `<li><a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a></li>`;
+        function createListItem(site, path, error) {
+          return `<li><a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a>${error ? error : ''}</li>`;
         }
       }
     });
