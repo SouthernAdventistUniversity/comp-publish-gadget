@@ -219,7 +219,7 @@
             const path = Object.keys(worker.detail.failed[site][0])[0];
             const error = worker.detail.failed[site][0][0];
 
-            failList.append(createListItem(site, path));
+            failList.append(createListItem(site, path, error));
 
             // Increase pub count
             pubCount++;
@@ -230,7 +230,7 @@
             const site = worker.detail.site;
             const path = worker.detail.success[site][0].path;
 
-            successList.append(createListItem(site, path, error));
+            successList.append(createListItem(site, path));
 
             // Increase pub count
             pubCount++;
