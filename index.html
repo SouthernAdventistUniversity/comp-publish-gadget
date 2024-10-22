@@ -218,6 +218,7 @@
             const site = worker.detail.site;
             const path = Object.keys(worker.detail.failed[site][0])[0];
             const error = worker.detail.failed[site][0][0];
+            console.log(error, worker.detail.failed[site][0]);
 
             failList.append(createListItem(site, path, error));
 
