@@ -35,9 +35,9 @@
     <form>
       <label for="component-input">Select a component</label>
       <input type="text" id="component-input" name="component" list="component-list" />
+      <input type="text" placeholder="Enter version message (optional)" name="message" />
 
       <input type="submit" value="Publish Pages" />
-      <!-- TODO: add custom message -->
 
       <datalist id="component-list"></datalist>
     </form>
@@ -54,7 +54,7 @@
 
       <details open>
         <summary>Failed: <span name="failCount">0</span></summary>
-        <ul name="fail"></ul>
+        <ul name="failed"></ul>
       </details>
     </section>
   </main>
@@ -111,7 +111,9 @@
         event.preventDefault();
         // Get title of component
         const comp = event.target.component.value;
-        // Reset counts 
+        // Get log message
+        const message = event.target.message.value;
+        // Reset counts
         pubCount = 0;
         countSpan.text(pubCount);
         failSpan.text(0);
@@ -131,7 +133,7 @@
             const site = page.sitename;
             const path = page.path;
 
-            publishPage(site, path, comp);
+            publishPage(site, path, comp, message);
           });
         });
       }
@@ -141,13 +143,14 @@
        * @param {string} site
        * @param {string} path
        * @param {string} comp - name to use in publish message
+       * @param {string} message - log message added to dynamically created message
        * @returns {null}
        */
-      function publishPage(site, path, comp) {
+      function publishPage(site, path, comp, message) {
         const data = {
           site: site,
           path: path,
-          log: "[Script] Dependency Publish: " + comp,
+          log: `[Script] Dependency Publish: ${comp} | ${message}`,
           include_scheduled_publish: false,
           include_pending_approval: false,
           include_checked_out: false,
@@ -209,9 +212,9 @@
               watchWorker(ID);
             }, 2000);
           }
-          //         If worker doesn't succeed: show error message
+          // Add page to either failure or success lists
           else if (worker.detail.failed == true) {
-            const failList = $("[name='success']");
+            const failList = $("[name='failed']");
             const site = worker.detail.site;
             const path = worker.detail.failed[site][0].path;
 
