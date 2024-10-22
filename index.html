@@ -249,7 +249,7 @@
          * @returns {string} html li item
          */
         function createListItem(site, path, error) {
-          return `<li><a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a>${error ? error : ''}</li>`;
+          return `<li><a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a>${error.length ? error : ''}</li>`;
         }
       }
     });
