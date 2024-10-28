@@ -63,7 +63,9 @@
     gadget.ready().then(() => {
       const TOKEN = gadget.get("token");
       const HOST = gadget.get("apihost");
-      let pubCount, failCount, successCount = 0;
+      let pubCount = 0;
+      let failCount = 0;
+      let successCount = 0;
       // Get Count span
       const countSpan = $("[name='count']");
       const failSpan = $("[name='failCount']");
@@ -114,7 +116,9 @@
         // Get log message
         const message = event.target.message.value;
         // Reset counts
-        pubCount, failCount, successCount = 0;
+        pubCount = 0;
+        failCount = 0;
+        successCount = 0;
         countSpan.text(pubCount);
         failSpan.text(failCount);
         successSpan.text(successCount);
