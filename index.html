@@ -27,7 +27,6 @@
       margin-inline-start: 0.4rem;
     }
   </style>
-  <base target="_blank" />
 </head>
 
 <body>
@@ -46,6 +45,7 @@
       <p>
         Publishing: <span name="count">0</span>&nbsp;/&nbsp;<span name="total">0</span>
       </p>
+      <p style="font-style: italic;">CMD + Click to open links in a new tab.</p>
 
       <details>
         <summary>Succeeded: <span name="successCount">0</span></summary>
@@ -237,7 +237,7 @@
             const path = worker.detail.success[site][0].path;
 
             successList.append(createListItem(site, path));
-            
+
             // Update success count
             successCount++;
             successSpan.text(successCount);
@@ -252,7 +252,7 @@
          * @returns {string} html li item
          */
         function createListItem(site, path, error) {
-          return `<li><a href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a>${error ? " " + error : ''}</li>`;
+          return `<li><a target="_blank" rel="noopener noreferrer" href="https://a.cms.omniupdate.com/11?skin=oucampus&account=southern&site=${site}&action=de&path=${path}">${site}${path}</a>${error ? " " + error : ''}</li>`;
         }
       }
     });
