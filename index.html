@@ -63,7 +63,7 @@
     gadget.ready().then(() => {
       const TOKEN = gadget.get("token");
       const HOST = gadget.get("apihost");
-      let pubCount = 0;
+      let pubCount, failCount, successCount = 0;
       // Get Count span
       const countSpan = $("[name='count']");
       const failSpan = $("[name='failCount']");
@@ -114,10 +114,10 @@
         // Get log message
         const message = event.target.message.value;
         // Reset counts
-        pubCount = 0;
+        pubCount, failCount, successCount = 0;
         countSpan.text(pubCount);
-        failSpan.text(0);
-        successSpan.text(0);
+        failSpan.text(failCount);
+        successSpan.text(successCount);
         // Reset results details
         $("[name='success']").html("");
         $("[name='fail']").html("");
@@ -225,8 +225,8 @@
             failList.append(createListItem(site, path, error));
 
             // Update failed count
-            console.log(failList.length);
-            failSpan.text(failList.length);
+            failCount++;
+            failSpan.text(failCount);
           } else {
             const successList = $("[name='success']");
             const site = worker.detail.site;
@@ -235,8 +235,8 @@
             successList.append(createListItem(site, path));
             
             // Update success count
-            console.log(successList.length);
-            successSpan.text(successList.length);
+            successCount++;
+            successSpan.text(successCount);
           }
         });
 
