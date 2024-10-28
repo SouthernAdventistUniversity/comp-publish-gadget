@@ -163,6 +163,10 @@
           data: data,
         })
           .then((data) => {
+            // Increase pub count
+            pubCount++;
+            // Update count for UI
+            countSpan.text(pubCount);
             getWorker(data.key);
           })
           .catch((xhr, status, error) => {
@@ -205,7 +209,6 @@
           url: HOST + "/rs/workers/" + ID,
           headers: {"X-Auth-Token": TOKEN},
         }).then((worker) => {
-          console.warn(worker);
           // If worker in progress: wait 5s and check again
           if (worker.status == "IN_PROGRESS") {
             setTimeout(() => {
@@ -221,9 +224,8 @@
 
             failList.append(createListItem(site, path, error));
 
-            // Increase pub count
-            pubCount++;
             // Update failed count
+            console.log(failList.length, successList.length);
             failSpan.text(failList.length);
           } else {
             const successList = $("[name='success']");
@@ -231,14 +233,10 @@
             const path = worker.detail.success[site][0].path;
 
             successList.append(createListItem(site, path));
-
-            // Increase pub count
-            pubCount++;
+            
             // Update success count
             successSpan.text(successList.length);
           }
-          // Update count for UI
-          countSpan.text(pubCount);
         });
 
         /**
