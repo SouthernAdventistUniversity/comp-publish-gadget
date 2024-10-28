@@ -225,7 +225,7 @@
             failList.append(createListItem(site, path, error));
 
             // Update failed count
-            console.log(failList.length, successList.length);
+            console.log(failList.length);
             failSpan.text(failList.length);
           } else {
             const successList = $("[name='success']");
@@ -235,6 +235,7 @@
             successList.append(createListItem(site, path));
             
             // Update success count
+            console.log(successList.length);
             successSpan.text(successList.length);
           }
         });
